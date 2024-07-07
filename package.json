@@ -1,12 +1,15 @@
 {
   "name": "event-emitter",
   "version": "1.0.0",
-  "keywords": [],
   "author": "Omar Baldi",
   "scripts": {
     "test": ""
   },
+  "dependencies": {
+    "uuid": "^10.0.0"
+  },
   "devDependencies": {
+    "@types/uuid": "^10.0.0",
     "typescript": "^5.5.3"
   }
 }
