@@ -12,23 +12,32 @@ export class Emitter {
     };
   }
 
-  private release(functionName: string, ids: string[]) {}
+  private release(functionName: string, ids: string[]) {
+    const updated = this.subscriptions.get(functionName)!;
+    ids.forEach((id) => updated.delete(id));
+
+    if (updated.size > 0) {
+      this.subscriptions.set(functionName, updated);
+    } else {
+      this.subscriptions.delete(functionName);
+    }
+  }
 
   subscribe(functionName: string, ...fns: FN[]) {
     const functionsWithIds = fns.map(this.generateFunctionWithUniqueId);
 
-    if (this.subscriptions.has(functionName)) {
-      const m = this.subscriptions.get(functionName)!;
-      functionsWithIds.forEach((v) => m.set(v.id, v.fn));
-      this.subscriptions.set(functionName, m);
-    } else {
-      const m = new Map<string, FN>();
-      functionsWithIds.forEach((v) => m.set(v.id, v.fn));
-      this.subscriptions.set(functionName, m);
-    }
+    const m = this.subscriptions.has(functionName)
+      ? this.subscriptions.get(functionName)!
+      : new Map<string, FN>();
+
+    functionsWithIds.forEach((v) => m.set(v.id, v.fn));
+    this.subscriptions.set(functionName, m);
 
     return {
-      release: this.release,
+      release: () => {
+        const ids = functionsWithIds.map((v) => v.id);
+        this.release(functionName, ids);
+      },
     };
   }
 
