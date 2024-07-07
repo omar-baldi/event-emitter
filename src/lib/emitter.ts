@@ -13,11 +13,11 @@ export class Emitter {
   }
 
   private release(functionName: string, ids: string[]) {
-    const updated = this.subscriptions.get(functionName)!;
-    ids.forEach((id) => updated.delete(id));
+    const updatedFunctionsMap = this.subscriptions.get(functionName)!;
+    ids.forEach((id) => updatedFunctionsMap.delete(id));
 
-    if (updated.size > 0) {
-      this.subscriptions.set(functionName, updated);
+    if (updatedFunctionsMap.size > 0) {
+      this.subscriptions.set(functionName, updatedFunctionsMap);
     } else {
       this.subscriptions.delete(functionName);
     }
@@ -41,5 +41,11 @@ export class Emitter {
     };
   }
 
-  emit(functionName: string, ...args: unknown[]) {}
+  emit(functionName: string, ...args: unknown[]) {
+    const functionsMap = this.subscriptions.get(functionName);
+
+    if (functionsMap) {
+      [...functionsMap.values()].forEach((fn) => fn(args));
+    }
+  }
 }
