@@ -1,0 +1,12 @@
+{
+  "name": "event-emitter",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "Omar Baldi",
+  "scripts": {
+    "test": ""
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}
