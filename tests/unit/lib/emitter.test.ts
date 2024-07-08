@@ -47,4 +47,22 @@ describe("Emitter", () => {
     expect(fn3).toHaveBeenCalled();
     expect(fn3).toHaveBeenCalledWith([1, 2]);
   });
+
+  it("should not call any subscribed functions after releasing multiple subscriptions", () => {
+    const emitter = new Emitter();
+    const fn1 = vi.fn((...args: unknown[]) => undefined);
+    const fn2 = vi.fn((...args: unknown[]) => undefined);
+    const fn3 = vi.fn((...args: unknown[]) => undefined);
+
+    const sub_1 = emitter.subscribe("function_name", fn1, fn2);
+    const sub_2 = emitter.subscribe("function_name", fn3);
+
+    sub_1.release();
+    sub_2.release();
+    emitter.emit("function_name", 1, 2);
+
+    expect(fn1).not.toHaveBeenCalled();
+    expect(fn2).not.toHaveBeenCalled();
+    expect(fn3).not.toHaveBeenCalled();
+  });
 });
