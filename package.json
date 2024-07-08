@@ -2,14 +2,18 @@
   "name": "event-emitter",
   "version": "1.0.0",
   "author": "Omar Baldi",
+  "type": "module",
   "scripts": {
-    "test": ""
+    "test": "vitest run"
   },
   "dependencies": {
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.10",
     "@types/uuid": "^10.0.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
   }
 }
